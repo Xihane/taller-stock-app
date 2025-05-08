@@ -1,0 +1,12 @@
+# Node
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# DB local
+*.db
+
+# Environment files
+.env
