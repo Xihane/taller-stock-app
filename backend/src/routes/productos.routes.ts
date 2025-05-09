@@ -1,8 +1,19 @@
-import { Router } from 'express';
-import { getProductos } from '../controllers/productos.controller';
+import { Router } from "express";
+import {
+  getAllProductos,
+  getProductoById,
+  createProducto,
+  updateProducto,
+  deleteProducto
+} from "../controllers/productos.controller";
 
 const router = Router();
 
-router.get("/", getProductos);
+// BREAD
+router.get("/", getAllProductos);         // Browse
+router.get('/:id', getProductoById);      // Read
+router.post("/", createProducto);         // Add
+router.put("/:id", updateProducto);       // Edit
+router.delete("/:id", deleteProducto);    // Delete
 
-export default router; // 👈 ESTO es obligatorio
+export default router;
