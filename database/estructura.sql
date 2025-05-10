@@ -33,7 +33,11 @@ CREATE TABLE `StockIngresado` (
   `idDeposito` INT,
   `fechaIngreso` DATE,
   `estado` ENUM('AC', 'BA')
+  `destinoTipo` enum('vehiculo','oficina','otro') NOT NULL,
+  `destinoValor` varchar(100) NOT NULL
 );
+
+
 
 CREATE TABLE `StockEgresado` (
   `idStockEgresado` INT PRIMARY KEY AUTO_INCREMENT,
