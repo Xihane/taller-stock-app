@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { db } from "../db";
 
+
+
+//idStockEgresado, idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso, estado, destinoTipo, destinoValor
+
 // Obtener todos los egresos activos
 export const getAllEgresos = async (req: Request, res: Response) => {
   try {
@@ -30,9 +34,9 @@ export const getStockEgresoById = async (req: Request, res: Response) => {
 
 // Crear nuevo egreso
 export const createEgreso = async (req: Request, res: Response) => {
-  const { idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso } = req.body;
+  const { idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso, destinoTipo, destinoValor } = req.body;
 
-  if (!idProducto || !cantidad || !idDeposito || !idVehiculo || !fechaEgreso) {
+  if (!idProducto || !cantidad || !idDeposito || !idVehiculo || !fechaEgreso || !destinoTipo || !destinoValor) {
     res.status(400).json({ error: "Todos los campos son obligatorios" });
     return;
   }
@@ -72,7 +76,6 @@ export const createEgreso = async (req: Request, res: Response) => {
        return;
     }
 
-    // Validación opcional: evitar duplicado del mismo producto al mismo vehículo y fecha
     const [duplicado]: any = await db.query(
       `SELECT * FROM StockEgresado 
        WHERE idProducto = ? AND idVehiculo = ? AND fechaEgreso = ? AND estado = 'AC'`,
@@ -86,9 +89,9 @@ export const createEgreso = async (req: Request, res: Response) => {
 
     const [result]: any = await db.query(
       `INSERT INTO StockEgresado 
-      (idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso, estado) 
-      VALUES (?, ?, ?, ?, ?, 'AC')`,
-      [idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso]
+      (idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso, destinoTipo, destinoValor, estado) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, 'AC')`,
+      [idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso, destinoTipo, destinoValor,]
     );
 
     res.status(201).json({ idStockEgresado: result.insertId, message: "Egreso registrado correctamente" });
@@ -100,9 +103,9 @@ export const createEgreso = async (req: Request, res: Response) => {
 // Actualizar egreso
 export const updateEgreso = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso } = req.body;
+  const { idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso, destinoTipo, destinoValor  } = req.body;
 
-  if (!idProducto || !cantidad || !idDeposito || !idVehiculo || !fechaEgreso) {
+  if (!idProducto || !cantidad || !idDeposito || !idVehiculo || !fechaEgreso || !destinoTipo || !destinoValor) {
     res.status(400).json({ error: "Todos los campos son obligatorios" });
     return;
   }
@@ -124,9 +127,9 @@ export const updateEgreso = async (req: Request, res: Response) => {
 
     const [result]: any = await db.query(
       `UPDATE StockEgresado 
-       SET idProducto = ?, cantidad = ?, idDeposito = ?, idVehiculo = ?, fechaEgreso = ? 
-       WHERE idStockEgresado = ?`,
-      [idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso, id]
+       SET idProducto = ?, cantidad = ?, idDeposito = ?, idVehiculo = ?, fechaEgreso = ? , destinoTipo = ?, destinoValor = ?
+       WHERE idStockEgresado = ? AND estado = 'AC'`,
+      [idProducto, cantidad, idDeposito, idVehiculo, fechaEgreso, destinoTipo, destinoValor, id]
     );
 
     if (result.affectedRows === 0) {

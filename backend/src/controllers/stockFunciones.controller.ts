@@ -18,7 +18,7 @@ export const getStockDisponible = async (req: Request, res: Response) => {
           AND se.idDeposito = si.idDeposito
         ), 0) AS stockDisponible
       FROM StockIngresado si
-      INNER JOIN Producto p ON p.idProducto = si.idProducto
+      INNER JOIN Productos p ON p.id = si.idProducto
       WHERE si.estado = 'AC'
       GROUP BY si.idProducto, si.idDeposito;
     `);

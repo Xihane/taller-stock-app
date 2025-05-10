@@ -27,9 +27,9 @@ export const getStockIngresoById = async (req: Request, res: Response) => {
 };
 
 export const createIngreso = async (req: Request, res: Response) => {
-  const { idProducto, cantidad, idDeposito, fechaIngreso, destinoTipo, destinoValor } = req.body;
+  const { idProducto, cantidad, idDeposito, fechaIngreso} = req.body;
 
-  if (!idProducto || !cantidad || !idDeposito || !fechaIngreso || !destinoTipo || !destinoValor) {
+  if (!idProducto || !cantidad || !idDeposito || !fechaIngreso ) {
     res.status(400).json({ error: "Todos los campos son obligatorios" });
     return;
   }
@@ -49,9 +49,9 @@ export const createIngreso = async (req: Request, res: Response) => {
   try {
     const [result]: any = await db.query(
       `INSERT INTO StockIngresado 
-      (idProducto, cantidad, idDeposito, fechaIngreso, destinoTipo, destinoValor, estado) 
-      VALUES (?, ?, ?, ?, ?, ?, 'AC')`,
-      [idProducto, cantidad, idDeposito, fechaIngreso, destinoTipo, destinoValor]
+      (idProducto, cantidad, idDeposito, fechaIngreso, estado) 
+      VALUES (?, ?, ?, ?, 'AC')`,
+      [idProducto, cantidad, idDeposito, fechaIngreso]
     );
 
     res.status(201).json({ idStockIngresado: result.insertId, message: "Ingreso registrado correctamente" });
@@ -62,8 +62,8 @@ export const createIngreso = async (req: Request, res: Response) => {
 
 export const updateIngreso = async (req: Request, res: Response) => {
   const { id } = req.params;
-    const { idProducto, cantidad, idDeposito, fechaIngreso, destinoTipo, destinoValor } = req.body;
-    if (!idProducto || !cantidad || !idDeposito || !fechaIngreso || !destinoTipo || !destinoValor) {
+    const { idProducto, cantidad, idDeposito, fechaIngreso } = req.body;
+    if (!idProducto || !cantidad || !idDeposito || !fechaIngreso ) {
         res.status(400).json({ error: "Todos los campos son obligatorios" });
         return;
     }
@@ -80,9 +80,9 @@ export const updateIngreso = async (req: Request, res: Response) => {
     try {
         const [result]: any = await db.query(
             `UPDATE StockIngresado 
-            SET idProducto = ?, cantidad = ?, idDeposito = ?, fechaIngreso = ?, destinoTipo = ?, destinoValor = ? 
+            SET idProducto = ?, cantidad = ?, idDeposito = ?, fechaIngreso = ? 
             WHERE idStockIngresado = ?`,
-            [idProducto, cantidad, idDeposito, fechaIngreso, destinoTipo, destinoValor, id]
+            [idProducto, cantidad, idDeposito, fechaIngreso, id]
         );
 
         if (result.affectedRows === 0) {
