@@ -8,9 +8,31 @@ import { db } from "../db";
 // Obtener todos los egresos activos
 export const getAllEgresos = async (req: Request, res: Response) => {
   try {
-    const [rows] = await db.query("SELECT * FROM StockEgresado WHERE estado = 'AC'");
+    const [rows] = await db.query(`
+      SELECT 
+        se.idStockEgresado,
+        se.idProducto,
+        p.nombre AS producto,
+        se.cantidad,
+        se.idDeposito,
+        d.nombre AS deposito,
+        se.idVehiculo,
+        v.dominio AS vehiculo,
+        se.fechaEgreso,
+        se.estado,
+        se.destinoTipo,
+        se.destinoValor
+      FROM stockegresado se
+      INNER JOIN productos p ON p.id = se.idProducto
+      INNER JOIN depositos d ON d.idDeposito = se.idDeposito
+      LEFT JOIN vehiculos v ON v.idVehiculo = se.idVehiculo
+      WHERE se.estado = 'AC'
+      ORDER BY se.fechaEgreso DESC
+    `);
+
     res.json(rows);
   } catch (error) {
+    console.error("Error en getAllEgresos:", error);
     res.status(500).json({ error: "Error al obtener egresos", detalles: error });
   }
 };

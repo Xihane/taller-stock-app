@@ -5,11 +5,11 @@ import IngresoForm from '../components/IngresoForm';
 interface Ingreso {
   idStockIngresado: number;
   idProducto: number;
+  producto: string;
   cantidad: number;
   idDeposito: number;
+  deposito: string;
   fechaIngreso: string;
-  destinoTipo: string;
-  destinoValor: string;
   estado: string;
 }
 
@@ -19,9 +19,10 @@ const Ingresos = () => {
 
   const fetchIngresos = async () => {
     try {
-      const res = await api.get('/stock-funciones/disponible');
-      console.log(res.data); // <-- Acá vas a ver la forma real de cada objeto ingreso
+      const res = await api.get('/stock-ingresado/');
+      console.table(res.data); // data es el array de productos
       setIngresos(res.data);
+      
     } catch (error) {
       console.error("Error al obtener ingresos:", error);
     } finally {
@@ -48,8 +49,10 @@ const Ingresos = () => {
             <tr>
               <th>ID</th>
               <th>Producto</th>
+              <th>Nombre del producto</th>
               <th>Cantidad</th>
               <th>Depósito</th>
+              <th>Nombre Depósito</th>
               <th>Fecha</th>
             </tr>
           </thead>
@@ -58,8 +61,11 @@ const Ingresos = () => {
               <tr key={ing.idStockIngresado}>
                 <td>{ing.idStockIngresado}</td>
                 <td>{ing.idProducto}</td>
+                <td>{ing.producto}</td>
                 <td>{ing.cantidad}</td>
                 <td>{ing.idDeposito}</td>
+                <td>{ing.deposito}</td>
+                {/* Formatear la fecha */}
                 <td>{ing.fechaIngreso ? new Date(ing.fechaIngreso).toLocaleDateString() : "Sin fecha"}</td>
               </tr>
             ))}
@@ -67,6 +73,7 @@ const Ingresos = () => {
         </table>
       )}
     </div>
+    
   );
 };
 

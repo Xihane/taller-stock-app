@@ -7,8 +7,6 @@ const IngresoForm = () => {
     cantidad: 1,
     idDeposito: 0,
     fechaIngreso: "",
-    destinoTipo: "",
-    destinoValor: ""
   });
 
   const [error, setError] = useState("");
@@ -34,8 +32,6 @@ const IngresoForm = () => {
         cantidad: 1,
         idDeposito: 0,
         fechaIngreso: "",
-        destinoTipo: "",
-        destinoValor: ""
       });
     } catch (err: any) {
       if (err.response?.data?.error) {
@@ -99,27 +95,7 @@ const IngresoForm = () => {
         />
       </div>
 
-      <div>
-        <label>Destino - Tipo (oficina o vehículo):</label>
-        <input
-          type="text"
-          name="destinoTipo"
-          value={form.destinoTipo}
-          onChange={handleChange}
-          placeholder="Ej: oficina"
-        />
-      </div>
 
-      <div>
-        <label>Destino - Valor (nombre o ID):</label>
-        <input
-          type="text"
-          name="destinoValor"
-          value={form.destinoValor}
-          onChange={handleChange}
-          placeholder="Ej: Administración"
-        />
-      </div>
 
       <div style={{ marginTop: 10 }}>
         <button type="submit">Registrar ingreso</button>

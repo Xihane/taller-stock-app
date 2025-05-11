@@ -3,12 +3,29 @@ import { db } from "../db";
 
 export const getAllIngresos = async (req: Request, res: Response) => {
   try {
-    const [rows] = await db.query("SELECT * FROM StockIngresado WHERE estado = 'AC'");
+    const [rows] = await db.query(`
+      SELECT 
+        si.idStockIngresado,
+        si.idProducto,
+        p.nombre AS producto,
+        si.cantidad,
+        si.idDeposito,
+        d.nombre AS deposito,
+        si.fechaIngreso,
+        si.estado
+      FROM stockingresado si
+      INNER JOIN productos p ON p.id = si.idProducto
+      INNER JOIN depositos d ON d.idDeposito = si.idDeposito
+      WHERE si.estado = 'AC'
+      ORDER BY si.fechaIngreso DESC
+    `);
+
     res.json(rows);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener ingresos", detalles: error });
-  }
+  console.error("Error en getAllIngresos:", error);  // 👈 esto
+  res.status(500).json({ error: "Error al obtener ingresos", detalles: error });  }
 };
+
 
 export const getStockIngresoById = async (req: Request, res: Response) => {
   const { id } = req.params;
