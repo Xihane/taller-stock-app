@@ -1,64 +1,145 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../services/api";
 
-const initialForm = {
-  nombre: "",
-  idMarca: 0,
-  idTipo: 0
-};
+interface ProductoMarca {
+  idProductoMarca: number;
+  nombre: string;
+}
+
+interface ProductoTipo {
+  idProductoTipo: number;
+  descripcion: string;
+}
 
 const ProductoForm = () => {
-  const [form, setForm] = useState(initialForm);
+  const [nombre, setNombre] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [estado] = useState("AC"); // Estado fijo al crear
+  const [idProductoMarca, setIdProductoMarca] = useState<number>(0);
+  const [idProductoTipo, setIdProductoTipo] = useState<number>(0);
+  const [ProductoMarcas, setProductoMarcas] = useState<ProductoMarca[]>([]);
+  const [tipos, setTipos] = useState<ProductoTipo[]>([]);
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [tiposRes, marcasRes] = await Promise.all([
+          api.get("/productos-tipos"),
+          api.get("/productos-marcas"),
+        ]);
+        setTipos(tiposRes.data || []);
+        setProductoMarcas(marcasRes.data || []);
+      } catch (err) {
+        console.error("Error al cargar listas:", err);
+        setError("Error al cargar datos del formulario.");
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    if (!form.nombre || form.idMarca <= 0 || form.idTipo <= 0) {
-      return setError("Completa todos los campos correctamente.");
+    if (!nombre || !descripcion || idProductoMarca <= 0 || idProductoTipo <= 0) {
+      setError("Todos los campos son obligatorios.");
+      return;
     }
 
     try {
-      await api.post("/productos", form);
-      setForm(initialForm);
-      alert("Producto agregado correctamente");
+      const payload = {
+        nombre,
+        descripcion,
+        estado,
+        idMarca: idProductoMarca,
+        idTipoProducto: idProductoTipo,
+      };
+
+      const response = await api.post("/productos", payload);
+      console.log("Producto creado:", response.data);
+
+      // Reiniciar formulario
+      setNombre("");
+      setDescripcion("");
+      setIdProductoMarca(0);
+      setIdProductoTipo(0);
+      alert("Producto creado correctamente.");
     } catch (err) {
-      setError("Error al agregar producto");
+      console.error("Error al crear producto:", err);
+      setError("Error al crear el producto.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
-      <h3>Agregar producto</h3>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="container">
+  {error && <p style={{ color: "red" }}>{error}</p>}
 
+  <form onSubmit={handleSubmit} className="custom-form">
+    
+    <div className="form-group">
+      <label>Nombre:</label>
       <input
-        name="nombre"
-        placeholder="Nombre del producto"
-        value={form.nombre}
-        onChange={handleChange}
+        className="form-control"
+        value={nombre}
+        onChange={(e) => setNombre(e.target.value)}
+        required
       />
-      <input
-        name="idMarca"
-        type="number"
-        placeholder="ID Marca"
-        value={form.idMarca}
-        onChange={handleChange}
+    </div>
+
+    <div className="form-group">
+      <label>Descripción:</label>
+      <textarea
+        className="form-control"
+        value={descripcion}
+        onChange={(e) => setDescripcion(e.target.value)}
+        required
       />
-      <input
-        name="idTipo"
-        type="number"
-        placeholder="ID Tipo"
-        value={form.idTipo}
-        onChange={handleChange}
-      />
-      <button type="submit">Guardar</button>
-    </form>
+    </div>
+
+    <div className="form-group">
+      <label>ProductoMarca:</label>
+      <select
+        className="form-control"
+        value={idProductoMarca}
+        onChange={(e) => setIdProductoMarca(Number(e.target.value))}
+        required
+      >
+        {(idProductoMarca === 0 || ProductoMarcas.length === 0) && (
+          <option value={0}>-- Seleccionar --</option>
+        )}
+        {ProductoMarcas.map((m) => (
+          <option key={m.idProductoMarca} value={m.idProductoMarca}>
+            {m.idProductoMarca} - {m.nombre}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div className="form-group">
+      <label>Tipo de Producto:</label>
+      <select
+        className="form-control"
+        value={idProductoTipo}
+        onChange={(e) => setIdProductoTipo(Number(e.target.value))}
+        required
+      >
+        {(idProductoTipo === 0 || tipos.length === 0) && (
+          <option value={0}>-- Seleccionar --</option>
+        )}
+        {tipos.map((t) => (
+          <option key={t.idProductoTipo} value={t.idProductoTipo}>
+            {t.idProductoTipo} - {t.descripcion}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <button type="submit">Guardar</button>
+  </form>
+</div>
+
   );
 };
 

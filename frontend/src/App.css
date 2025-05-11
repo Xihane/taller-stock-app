@@ -1,38 +1,149 @@
-.App {
-  text-align: center;
+:root {
+  --black-olive: #292e1e;
+  --mauveine: #a45ec5;
+  --purpureus: #9649cb;
+  --periwinkle: #afbbf2;
+  --dark-slate-gray: #2c423f;
+  --outer-space: #4c5b61;
+  --battleship-gray: #829191;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Estilo base del cuerpo */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--dark-slate-gray);
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+/* Contenedor principal centrado */
+.container-center {
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;  
+}
+
+/* Estilo general del contenedor */
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Título de la página */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Estilo de botones generales */
+button {
+  background-color: var(--black-olive);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--purpureus);
+  color: white;
+}
+
+/* Estilo de botones seleccionados */
+.button-selected {
+  background-color: var(--mauveine);
+}
+
+/* Contenedor de búsqueda */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.input-field {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid var(--battleship-gray);
+  border-radius: 5px;
+}
+
+/* Estilos para tablas */
+.custom-table {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--battleship-gray);
+  color: var(--black-olive);
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--purpureus);
+  font-size: 0.95rem;
+}
+
+.custom-table th {
+  background-color: var(--mauveine);
+  color: var(--black-olive);
+  font-weight: 600;
+}
+
+.custom-table tr:hover {
+  background-color: var(--periwinkle);
+}
+
+/* Estilos de formulario */
+.custom-form {
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: var(--black-olive);
+  font-weight: 500;
+}
+
+.form-control {
+  padding: 0.5rem;
+  border: 1px solid var(--purpureus);
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+}
+
+/* Título de la acción seleccionada */
+.action-title {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 1rem;
 }
