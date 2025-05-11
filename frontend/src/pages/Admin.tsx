@@ -1,13 +1,27 @@
 import { useState } from "react";
-import ProductoForm from "../components/ProductoForm";
+import ProductoForm from "../components/ProductosForm";
 import ProductoTable from "../components/ProductoTable";
 import ProductoEditarForm from "../components/ProductoEditarForm";
 import ProductoDetalle from "../components/ProductoDetalle";
+import ProductoTiposForm from "../components/ProdTiposForm";
+import ProductosTiposTable from "../components/ProdTiposTable";
+import ProductosTiposEditar from "../components/ProdTiposEditarForm";
+import ProductosTiposDetalles from "../components/ProdTiposDetalle";
+
+import ProdMarcasForm from "../components/ProdMarcasForm";
+import ProdMarcasTable from "../components/ProdMarcasTable";
+import ProdMarcasEditarForm from "../components/ProdMarcasEditarForm";
+import ProdMarcasDetalles from "../components/ProdMarcasDetalles";
+
+import DepositoDetalle from "../components/DepositoDetalle";
+import DepositosForm from "../components/DepositosForm";
+import DepositosTable from "../components/DepositosTable";
+import DepositosEditarForm from "../components/DepositosEditarForm";
 
 const entidades = [
   "Productos",
-  "ProductosTipos",
-  "ProductosMarcas",
+  "Tipos de Productos",
+  "Marcas de Productos",
   "Depósitos",
   "Vehículos"
 ];
@@ -17,8 +31,8 @@ const acciones = ["Listar", "Agregar", "Buscar"];
 const Admin = () => {
   const [entidadSeleccionada, setEntidadSeleccionada] = useState<string | null>(null);
   const [accionSeleccionada, setAccionSeleccionada] = useState<string | null>(null);
-  const [productoIdBuscar, setProductoIdBuscar] = useState("");
   const [idSeleccionado, setIdSeleccionado] = useState<number | null>(null);
+  const [idBuscar, setIdBuscar] = useState(""); // reemplaza productoIdBuscar
 
   const renderComponente = () => {
     if (entidadSeleccionada === "Productos") {
@@ -59,21 +73,201 @@ const Admin = () => {
 
         case "Eliminar":
           return idSeleccionado !== null ? (
-            <p>Producto con ID {idSeleccionado} eliminado (simulado).</p>
+            <p>Producto con ID {idSeleccionado} eliminado (baja).</p>
           ) : (
             <p>Seleccioná un producto para eliminar.</p>
           );
 
         case "Buscar":
-          return <ProductoDetalle id={Number(productoIdBuscar)} />;
+          return <ProductoDetalle id={Number(idBuscar)} />;
 
         default:
           return <p>Acción no reconocida.</p>;
       }
     }
-  };
+    
+    // Agregamos soporte para TIPOS DE PRODUCTOS
+
+
+
+    if (entidadSeleccionada === "Tipos de Productos") {
+    switch (accionSeleccionada) {
+      case "Listar":
+        return (
+          <ProductosTiposTable
+            onEditar={(id) => {
+              setIdSeleccionado(id);
+              setAccionSeleccionada("Editar");
+            }}
+            onEliminar={(id) => {
+              setIdSeleccionado(id);
+              setAccionSeleccionada("Eliminar");
+            }}
+          />
+        );
+
+      case "Agregar":
+        return (
+          <ProductoTiposForm
+            onCancel={() => setAccionSeleccionada(null)}
+            onCreated={() => setAccionSeleccionada("Listar")}
+          />
+        );
+
+      case "Editar":
+        return idSeleccionado !== null ? (
+          <ProductosTiposEditar
+            idProductoTipo={idSeleccionado}
+            onCancel={() => {
+              setAccionSeleccionada(null);
+              setIdSeleccionado(null);
+            }}
+            onUpdated={() => {
+              setAccionSeleccionada("Listar");
+              setIdSeleccionado(null);
+            }}
+          />
+        ) : (
+          <p>Seleccioná un tipo de producto para editar.</p>
+        );
+
+        case "Eliminar":
+          return idSeleccionado !== null ? (
+            <p>Tipo de producto con ID {idSeleccionado} eliminado (baja).</p>
+          ) : (
+            <p>Seleccioná un tipo de producto para eliminar.</p>
+          );
+          case "Buscar":
+            return <ProductosTiposDetalles idProductoTipo={Number(idBuscar)} />;
+
+      default:
+        return <p>Acción no reconocida.</p>;
+        }
+      }
+
+  // Agregamos soporte para MARCAS DE PRODUCTOS
+  // su props es idProductoMarca
+
+  if (entidadSeleccionada === "Marcas de Productos") {
+    switch (accionSeleccionada) {
+      case "Listar":
+        return (
+          <ProdMarcasTable
+            onEditar={(id) => {
+              setIdSeleccionado(id);
+              setAccionSeleccionada("Editar");
+            }}
+            onEliminar={(id) => {
+              setIdSeleccionado(id);
+              setAccionSeleccionada("Eliminar");
+            }}
+          />
+        );
+
+      case "Agregar":
+        return (
+          <ProdMarcasForm
+            onCancel={() => setAccionSeleccionada(null)}
+            onCreated={() => setAccionSeleccionada("Listar")}
+          />
+        );
+
+      case "Editar":
+        return idSeleccionado !== null ? (
+          <ProdMarcasEditarForm
+            idProductoMarca={idSeleccionado}
+            onCancel={() => {
+              setAccionSeleccionada(null);
+              setIdSeleccionado(null);
+            }}
+            onUpdated={() => {
+              setAccionSeleccionada("Listar");
+              setIdSeleccionado(null);
+            }}
+          />
+        ) : (
+          <p>Seleccioná una marca de producto para editar.</p>
+        );
+
+      case "Eliminar":
+        return idSeleccionado !== null ? (
+          <p>Marca de producto con ID {idSeleccionado} eliminado (baja).</p>
+        ) : (
+          <p>Seleccioná una marca de producto para eliminar.</p>
+        );
+
+      case "Buscar":
+        return <ProdMarcasDetalles idProductoMarca={Number(idBuscar)} />;
+
+      default:
+        return <p>Acción no reconocida.</p>;
+    }
+  }
+
+
+// soporte para DEPOSITOSS
+  if (entidadSeleccionada === "Depósitos") {
+    switch (accionSeleccionada) {
+      case "Listar":
+        return (
+          <DepositosTable
+            onEditar={(id) => {
+              setIdSeleccionado(id);
+              setAccionSeleccionada("Editar");
+            }}
+            onEliminar={(id) => {
+              setIdSeleccionado(id);
+              setAccionSeleccionada("Eliminar");
+            }}
+          />
+        );
+
+      case "Agregar":
+        return (
+          <DepositosForm
+            onCancel={() => setAccionSeleccionada(null)}
+            onCreated={() => setAccionSeleccionada("Listar")}
+          />
+        );
+
+      case "Editar":
+        return idSeleccionado !== null ? (
+          <DepositosEditarForm
+            idDeposito={idSeleccionado}
+            onCancel={() => {
+              setAccionSeleccionada(null);
+              setIdSeleccionado(null);
+            }}
+            onUpdated={() => {
+              setAccionSeleccionada("Listar");
+              setIdSeleccionado(null);
+            }}
+          />
+        ) : (
+          <p>Seleccioná una marca de producto para editar.</p>
+        );
+
+      case "Eliminar":
+        return idSeleccionado !== null ? (
+          <p>Marca de producto con ID {idSeleccionado} eliminado (baja).</p>
+        ) : (
+          <p>Seleccioná una marca de producto para eliminar.</p>
+        );
+
+      case "Buscar":
+        return <DepositoDetalle idDeposito={Number(idBuscar)} />;
+
+      default:
+        return <p>Acción no reconocida.</p>;
+    }
+  }
+
+  
+  }; // CIERRE DE renderComponente
+
 
   return (
+
     <div className="container text-center">
       <h1 className="title">Panel de Administración</h1>
 
@@ -112,19 +306,22 @@ const Admin = () => {
         </div>
       )}
 
-      {/* Buscar por ID (solo si es Buscar y Productos) */}
-      {accionSeleccionada === "Buscar" && entidadSeleccionada === "Productos" && (
-        <div className="search-container">
-          <input
-            type="number"
-            placeholder="ID del producto"
-            value={productoIdBuscar}
-            onChange={(e) => setProductoIdBuscar(e.target.value)}
-            className="input-field"
-          />
-          <button onClick={() => renderComponente()} className="button">Buscar</button>
-        </div>
-      )}
+      
+        {accionSeleccionada === "Buscar" && (
+            <div className="search-container">
+            <input
+              type="number"
+              min="1" 
+              placeholder="ID del tipo de producto"
+              value={idBuscar}
+              onChange={(e) => setIdBuscar(e.target.value)}
+              className="input-field"
+            />
+
+            <button onClick={() => renderComponente()} className="button">Buscar</button>
+          </div>
+        )}
+
 
       <div style={{ marginTop: "2rem" }}>
         {entidadSeleccionada && accionSeleccionada && (
