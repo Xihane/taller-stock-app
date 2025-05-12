@@ -3,14 +3,16 @@ import { db } from '../db';
 
 //vehiculos: idVehiculo,dominio, idMarca, modelo, anio, estado
 
+// Mostrar solo vehículos activos
 export const getAllVehiculos = async (req: Request, res: Response) => {
     try {
-        const [rows] = await db.query('SELECT * FROM vehiculos');
+        const [rows] = await db.query('SELECT * FROM vehiculos WHERE estado = "AC"');
         res.json(rows);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los vehiculos', detalles: error });
     }
 };
+
 
 export const getVehiculoById = async (req: Request, res: Response) => {
     const {id} = req.params;
@@ -50,17 +52,17 @@ export const createVehiculo = async (req: Request, res: Response) => {
 
 export const updateVehiculo = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { dominio, idMarca, modelo, anio, estado } = req.body;
+    const { dominio, idMarca, modelo, anio } = req.body;
     try {
-        if (!dominio || !idMarca || !modelo || !anio || !estado) {
-            res.status(400).json({ error: 'Dominio, Marca, Modelo, Año y estado son obligatorios' });
+        if (!dominio || !idMarca || !modelo || !anio) {
+            res.status(400).json({ error: 'Dominio, Marca, Modelo, Año son obligatorios' });
             return;
         }
         const [result]: any = await db.query(
             `UPDATE vehiculos
-              SET dominio = ?, idMarca = ?, modelo = ?, anio = ?, estado = ?
+              SET dominio = ?, idMarca = ?, modelo = ?, anio = ?
               WHERE idVehiculo = ?`,
-            [dominio, idMarca, modelo, anio, estado, id]
+            [dominio, idMarca, modelo, anio, id]
         );
 
         if (result.affectedRows === 0) {

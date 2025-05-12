@@ -23,13 +23,13 @@ const ProductoForm = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      
       try {
-        const [tiposRes, marcasRes] = await Promise.all([
-          api.get("/productos-tipos"),
-          api.get("/productos-marcas"),
+        const [tiposRes, marcasRes] = await Promise.all([api.get("/productos-tipos"), api.get("/productos-marcas"),
         ]);
         setTipos(tiposRes.data || []);
         setProductoMarcas(marcasRes.data || []);
+        console.table(marcasRes)
       } catch (err) {
         console.error("Error al cargar listas:", err);
         setError("Error al cargar datos del formulario.");
@@ -99,7 +99,7 @@ const ProductoForm = () => {
     </div>
 
     <div className="form-group">
-      <label>ProductoMarca:</label>
+      <label>Marca del producto:</label>
       <select
         className="form-control"
         value={idProductoMarca}

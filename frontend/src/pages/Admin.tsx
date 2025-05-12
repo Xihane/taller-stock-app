@@ -18,6 +18,11 @@ import DepositosForm from "../components/DepositosForm";
 import DepositosTable from "../components/DepositosTable";
 import DepositosEditarForm from "../components/DepositosEditarForm";
 
+import VehiculoForm from "../components/VehiculosForm";
+import VehiculoEditarForm from "../components/VehiculosEditarForm";
+import VehiculoTable from "../components/VehiculosTable";
+import VehiculosDetalle from "../components/VehiculosDetalle";
+
 const entidades = [
   "Productos",
   "Tipos de Productos",
@@ -261,6 +266,61 @@ const Admin = () => {
         return <p>Acción no reconocida.</p>;
     }
   }
+
+  // VEHICULOS
+
+    if (entidadSeleccionada === "Vehículos") {
+    switch (accionSeleccionada) {
+      case "Listar":
+        return (
+          <VehiculoTable
+            onEditar={(id) => {
+              setIdSeleccionado(id);
+              setAccionSeleccionada("Editar");
+            }}
+            onEliminar={(id) => {
+              setIdSeleccionado(id);
+              setAccionSeleccionada("Eliminar");
+            }}
+          />
+        );
+
+      case "Agregar":
+        return <VehiculoForm />;
+
+
+        case "Editar":
+          return idSeleccionado !== null ? (
+            <VehiculoEditarForm
+              idVehiculo={idSeleccionado}
+              onCancel={() => {
+                setAccionSeleccionada(null);
+                setIdSeleccionado(null);
+              }}
+              onUpdated={() => {
+                setAccionSeleccionada("Listar");
+                setIdSeleccionado(null);
+              }}
+            />
+          ) : (
+            <p>Seleccioná un producto para editar.</p>
+          );
+
+        case "Eliminar":
+          return idSeleccionado !== null ? (
+            <p>Vehiculo con ID {idSeleccionado} eliminado (baja).</p>
+          ) : (
+            <p>Seleccioná un producto para eliminar.</p>
+          );
+
+        case "Buscar":
+          return <VehiculosDetalle idVehiculo={Number(idBuscar)} />;
+
+        default:
+          return <p>Acción no reconocida.</p>;
+      }
+    }
+
 
   
   }; // CIERRE DE renderComponente

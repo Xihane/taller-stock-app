@@ -11,8 +11,17 @@ const IngresoForm = () => {
 
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === "cantidad" || name === "idProducto" || name === "idDeposito"
+        ? Number(value)
+        : value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,64 +52,68 @@ const IngresoForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 400, margin: "0 auto" }}>
-      <h2>Registrar nuevo ingreso</h2>
+    <div className="container">
+      <h3>Registrar nuevo ingreso</h3>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div>
-        <label>Producto (ID):</label>
-        <input
-          type="number"
-          name="idProducto"
-          value={form.idProducto}
-          onChange={handleChange}
-          placeholder="Ej: 1"
-          required
-        />
-      </div>
+      <form onSubmit={handleSubmit} className="custom-form">
+        <div className="form-group">
+          <label>Producto (ID):</label>
+          <input
+            type="number"
+            className="form-control"
+            name="idProducto"
+            value={form.idProducto}
+            onChange={handleChange}
+            required
+            placeholder="Ej: 1"
+          />
+        </div>
 
-      <div>
-        <label>Cantidad:</label>
-        <input
-          type="number"
-          name="cantidad"
-          value={form.cantidad}
-          onChange={handleChange}
-          placeholder="Ej: 10"
-          required
-        />
-      </div>
+        <div className="form-group">
+          <label>Cantidad:</label>
+          <input
+            type="number"
+            className="form-control"
+            name="cantidad"
+            value={form.cantidad}
+            onChange={handleChange}
+            required
+            placeholder="Ej: 10"
+          />
+        </div>
 
-      <div>
-        <label>Depósito (ID):</label>
-        <input
-          type="number"
-          name="idDeposito"
-          value={form.idDeposito}
-          onChange={handleChange}
-          placeholder="Ej: 2"
-          required
-        />
-      </div>
+        <div className="form-group">
+          <label>Depósito (ID):</label>
+          <input
+            type="number"
+            className="form-control"
+            name="idDeposito"
+            value={form.idDeposito}
+            onChange={handleChange}
+            required
+            placeholder="Ej: 2"
+          />
+        </div>
 
-      <div>
-        <label>Fecha de ingreso:</label>
-        <input
-          type="date"
-          name="fechaIngreso"
-          value={form.fechaIngreso}
-          onChange={handleChange}
-          required
-        />
-      </div>
+        <div className="form-group">
+          <label>Fecha de ingreso:</label>
+          <input
+            type="date"
+            className="form-control"
+            name="fechaIngreso"
+            value={form.fechaIngreso}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-
-
-      <div style={{ marginTop: 10 }}>
-        <button type="submit">Registrar ingreso</button>
-      </div>
-    </form>
+        <div style={{ marginTop: "1rem" }}>
+          <button type="submit">Registrar ingreso</button>
+        </div>
+      </form>
+    </div>
   );
 };
 

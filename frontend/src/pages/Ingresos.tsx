@@ -35,7 +35,7 @@ const Ingresos = () => {
   }, []);
 
   return (
-    <div>
+    <div className='container'>
       <h1>Listado de Ingresos</h1>
       <IngresoForm />
       <hr />
@@ -44,7 +44,8 @@ const Ingresos = () => {
       ) : ingresos.length === 0 ? (
         <p>No hay ingresos registrados.</p>
       ) : (
-        <table>
+        
+        <table className='custom-table'>
           <thead>
             <tr>
               <th>ID</th>

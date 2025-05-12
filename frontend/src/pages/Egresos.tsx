@@ -39,7 +39,7 @@ const Egresos = () => {
   }, []);
 
   return (
-    <div>
+    <div className='container'>
   <h1>Listado de Egresos</h1>
   <EgresoForm />
   <hr />
@@ -48,7 +48,7 @@ const Egresos = () => {
   ) : Egresos.length === 0 ? (
     <p>No hay Egresos registrados.</p>
   ) : (
-    <table>
+    <table className='custom-table'>
       <thead>
         <tr>
           <th>ID</th>

@@ -15,7 +15,13 @@ const EgresoForm = () => {
   const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === "cantidad" || name === "idProducto" || name === "idDeposito" || name === "idVehiculo"
+        ? Number(value)
+        : value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,50 +58,107 @@ const EgresoForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 400, margin: "0 auto" }}>
-      <h2>Registrar nuevo Egreso</h2>
+    <div className="container">
+      <h3>Registrar nuevo Egreso</h3>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div>
-        <label>Producto (ID):</label>
-        <input type="number" name="idProducto" value={form.idProducto} onChange={handleChange} required />
-      </div>
+      <form onSubmit={handleSubmit} className="custom-form">
+        <div className="form-group">
+          <label>Producto (ID):</label>
+          <input
+            type="number"
+            className="form-control"
+            name="idProducto"
+            value={form.idProducto}
+            onChange={handleChange}
+            required
+            placeholder="Ej: 1"
+          />
+        </div>
 
-      <div>
-        <label>Cantidad:</label>
-        <input type="number" name="cantidad" value={form.cantidad} onChange={handleChange} required />
-      </div>
+        <div className="form-group">
+          <label>Cantidad:</label>
+          <input
+            type="number"
+            className="form-control"
+            name="cantidad"
+            value={form.cantidad}
+            onChange={handleChange}
+            required
+            placeholder="Ej: 5"
+          />
+        </div>
 
-      <div>
-        <label>Depósito (ID):</label>
-        <input type="number" name="idDeposito" value={form.idDeposito} onChange={handleChange} required />
-      </div>
+        <div className="form-group">
+          <label>Depósito (ID):</label>
+          <input
+            type="number"
+            className="form-control"
+            name="idDeposito"
+            value={form.idDeposito}
+            onChange={handleChange}
+            required
+            placeholder="Ej: 2"
+          />
+        </div>
 
-      <div>
-        <label>Vehículo (ID):</label>
-        <input type="number" name="idVehiculo" value={form.idVehiculo} onChange={handleChange} required />
-      </div>
+        <div className="form-group">
+          <label>Vehículo (ID):</label>
+          <input
+            type="number"
+            className="form-control"
+            name="idVehiculo"
+            value={form.idVehiculo}
+            onChange={handleChange}
+            required
+            placeholder="Ej: 3"
+          />
+        </div>
 
-      <div>
-        <label>Fecha de Egreso:</label>
-        <input type="date" name="fechaEgreso" value={form.fechaEgreso} onChange={handleChange} required />
-      </div>
+        <div className="form-group">
+          <label>Fecha de Egreso:</label>
+          <input
+            type="date"
+            className="form-control"
+            name="fechaEgreso"
+            value={form.fechaEgreso}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-      <div>
-        <label>Destino Tipo:</label>
-        <input type="text" name="destinoTipo" value={form.destinoTipo} onChange={handleChange} required />
-      </div>
+        <div className="form-group">
+          <label>Destino Tipo:</label>
+          <input
+            type="text"
+            className="form-control"
+            name="destinoTipo"
+            value={form.destinoTipo}
+            onChange={handleChange}
+            required
+            placeholder="Ej: Taller"
+          />
+        </div>
 
-      <div>
-        <label>Destino Valor:</label>
-        <input type="text" name="destinoValor" value={form.destinoValor} onChange={handleChange} required />
-      </div>
+        <div className="form-group">
+          <label>Destino Valor:</label>
+          <input
+            type="text"
+            className="form-control"
+            name="destinoValor"
+            value={form.destinoValor}
+            onChange={handleChange}
+            required
+            placeholder="Ej: Taller Central"
+          />
+        </div>
 
-      <div style={{ marginTop: 10 }}>
-        <button type="submit">Registrar Egreso</button>
-      </div>
-    </form>
+        <div style={{ marginTop: "1rem" }}>
+          <button type="submit">Registrar Egreso</button>
+        </div>
+      </form>
+    </div>
   );
 };
 
