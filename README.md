@@ -69,12 +69,6 @@ Cada entidad cuenta con:
 - **Visualización por producto** con formato legible.  
 - **Filtro y procesamiento de datos** con SQL (`JOIN` con nombres relacionados).  
 
-## 🧠 Extras y Detalles Técnicos
-- Se utilizó **JSON** para el intercambio de datos entre frontend y backend.  
-- La estructura del backend permite **escalar a múltiples endpoints REST** por recurso.  
-- **Código modular y reutilizable** para formularios, manejo de errores y tablas.  
-- Uso de **componentes reutilizables** en React para mantener un diseño limpio y responsivo.  
-- **Feedback visual inmediato** (alertas, validaciones en pantalla).  
 
 ## 📌 Pendientes o Mejoras Futuras
 - 📅 **Filtros por fecha y producto** en la vista de ingresos/egresos.  
