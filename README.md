@@ -68,7 +68,9 @@ Cada entidad cuenta con:
 - **Consulta histórica** de ingresos y egresos de productos.  
 - **Visualización por producto** con formato legible.  
 - **Filtro y procesamiento de datos** con SQL (`JOIN` con nombres relacionados).  
+![image](https://github.com/user-attachments/assets/f3c94d5c-44ab-40e1-967f-fcec4e0b48f7)
 
+![image](https://github.com/user-attachments/assets/7c365854-ace2-4064-bdac-0b82bbf352cf)
 
 ## 📌 Pendientes o Mejoras Futuras
 - 📅 **Filtros por fecha y producto** en la vista de ingresos/egresos.  
