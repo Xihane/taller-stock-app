@@ -29,7 +29,7 @@ const StockTable = () => {
   }, []);
 
   return (
-    <div className="container-center">
+    <div className="container">
       {error && <p style={{ color: "red" }}>{error}</p>}
       <h3>Stock Disponible</h3>
       <table className="custom-table">

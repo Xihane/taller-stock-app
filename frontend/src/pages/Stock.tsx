@@ -3,7 +3,7 @@ import StockTable from '../components/StockTable';
 
 const Stock = () => {
     return (
-        <div>
+        <div className='container'>
             <h1>Stock</h1>
             <StockTable />
         </div>

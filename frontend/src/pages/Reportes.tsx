@@ -14,7 +14,6 @@ const Reportes = () => {
   };
 
   const handleBuscarClick = () => {
-    // Verificar si el ID de producto es válido antes de hacer la búsqueda
     if (!idProducto || isNaN(Number(idProducto))) {
       alert("Por favor, ingrese un ID de producto válido.");
       return;
@@ -22,46 +21,52 @@ const Reportes = () => {
   };
 
   return (
-    <div>
-      <h1>Reportes de Movimiento de Stock</h1>
-      
-      <div>
-        <label>Fecha de Inicio:</label>
-        <input
-          type="date"
-          name="startDate"
-          value={filtroFecha.startDate}
-          onChange={handleFilterChange}
-        />
-      </div>
-      
-      <div>
-        <label>Fecha de Fin:</label>
-        <input
-          type="date"
-          name="endDate"
-          value={filtroFecha.endDate}
-          onChange={handleFilterChange}
-        />
-      </div>
+    <div className="container">
+      <h3>Reportes de Movimiento de Stock</h3>
+
+      <form className="custom-form" onSubmit={(e) => e.preventDefault()}>
+        <div className="form-group">
+          <label>Fecha de Inicio:</label>
+          <input
+            type="date"
+            className="form-control"
+            name="startDate"
+            value={filtroFecha.startDate}
+            onChange={handleFilterChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Fecha de Fin:</label>
+          <input
+            type="date"
+            className="form-control"
+            name="endDate"
+            value={filtroFecha.endDate}
+            onChange={handleFilterChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>ID del Producto:</label>
+          <input
+            type="number"
+            className="form-control"
+            name="idProducto"
+            value={idProducto}
+            onChange={handleProductoChange}
+            placeholder="Ej: 1"
+          />
+        </div>
+
+        <div>
+          <button type="button" onClick={handleBuscarClick}>
+            Buscar Historial
+          </button>
+        </div>
+      </form>
 
       <div>
-        <label>ID del Producto:</label>
-        <input
-          type="number"
-          name="idProducto"
-          value={idProducto}
-          onChange={handleProductoChange}
-          placeholder="Ej: 1"
-        />
-      </div>
-
-      <div>
-        <button onClick={handleBuscarClick}>Buscar Historial</button>
-      </div>
-      
-      <div>
-        <h3>Movimientos Filtrados</h3>
         {idProducto && <MovimientoHistorial idProducto={Number(idProducto)} />}
       </div>
     </div>

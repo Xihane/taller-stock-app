@@ -33,10 +33,10 @@ const MovimientoHistorial = ({ idProducto }: MovimientoHistorialProps) => {
   }, [idProducto]);
 
   return (
-    <div>
+    <div className="container">
       {error && <p style={{ color: "red" }}>{error}</p>}
       <h3>Historial de movimientos</h3>
-      <table>
+      <table className="custom-table">
         <thead>
           <tr>
             <th>Tipo</th>
